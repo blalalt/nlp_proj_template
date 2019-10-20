@@ -128,7 +128,6 @@ data/*
 log/*
 models/*
 *.env
-*.md
 __init__.py
 .idea/*
 
