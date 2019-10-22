@@ -129,4 +129,5 @@ log/*
 models/*
 *.env
 .idea/*
+others/*
 
