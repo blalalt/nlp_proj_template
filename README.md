@@ -17,3 +17,43 @@ python reset -c
 email=邮箱地址
 email_passwd=邮箱密码
 ```
+
+## 4. models 模版
+```python
+import utils
+import setting
+import warnings
+import logging
+import torch
+from typing import *
+
+torch.backends.cudnn.deterministic = True
+
+warnings.filterwarnings('ignore')
+
+config = setting.Config(data_name='chip_ev3',
+                        model_name='basic_bert',
+                        bs=64,
+                        embedding_dim=768,
+                        cuda_device=0 if torch.cuda.is_available() else -1,
+                        pretrained_model='bert-base-chinese'
+                        )
+
+_log_file = utils.generate_time_file(config.log_path, 'log')
+logging.basicConfig(
+        handlers=[
+            logging.FileHandler(
+                    filename=_log_file,
+                    mode='w',
+                    encoding='utf8'),
+        ],
+        level=logging.DEBUG
+)
+#...
+#...
+def train():
+    #...
+    utils.sent_email(_log_file, 'fscore')
+if __name__ == '__main__':
+    train()
+```
