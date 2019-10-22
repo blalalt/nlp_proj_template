@@ -4,6 +4,9 @@ import argparse
 def create_all():
     for dir_name in ['data', 'log', 'models']:
         os.makedirs(dir_name)
+    with open('.env', 'w', encoding='utf8') as f:
+        f.writelines('email=\n')
+        f.writelines('email_passwd=\n')
 
 def delete(key: str):
     if key == 'all':
