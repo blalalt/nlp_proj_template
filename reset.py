@@ -6,7 +6,11 @@ def create_all():
         os.makedirs(dir_name)
 
 def delete(key: str):
-    os.removedirs(key)
+    if key == 'all':
+        for dir_name in ['data', 'log', 'models']:
+            os.removedirs(dir_name)
+    else:
+        os.removedirs(key)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

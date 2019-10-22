@@ -110,6 +110,3 @@ def generate_time_file(path, suffix):
 
 def re_mkdir(path, exist_ok=True):
     os.makedirs(path, exist_ok=exist_ok)
-
-if __name__ == '__main__':
-    sent_email('123', '123')
