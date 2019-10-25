@@ -3,6 +3,7 @@ import numpy as np
 import json
 import os
 import xlrd
+import xlsxwriter
 import datetime
 import smtplib
 from email.mime.text import MIMEText
@@ -65,6 +66,18 @@ def save_to_txt(name: str, text: str, dir: str):
     with open(path, 'w', encoding='utf8') as f:
         f.write(text)
 
+def save_to_xlsx(name, values, header=None):
+    wb = xlsxwriter.Workbook(name)
+    st = wb.add_worksheet()
+    start_row = 0
+    if header:
+        st.write_row(0, 0, header)
+        start_row += 1
+    for row in values:
+        st.write_row(start_row, 0, row)
+        start_row += 1
+
+    wb.close()
 
 def read_xlsx(file_path: str, header: bool = True, index: int=0):
     sheet = xlrd.open_workbook(filename=file_path).sheet_by_index(index)
@@ -110,3 +123,11 @@ def generate_time_file(path, suffix):
 
 def re_mkdir(path, exist_ok=True):
     os.makedirs(path, exist_ok=exist_ok)
+
+
+def save_predict_result(path, prob, label, data):
+    assert len(prob) == len(label) == len(data)
+    values = []
+    for d, t, p in zip(data, label, prob):
+        values.append([d, t, p])
+    save_to_xlsx(path, values)

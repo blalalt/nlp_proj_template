@@ -20,7 +20,8 @@ class Config(UserDict):
                  model_name,
                  bs=128,
                  epoch=100,
-                 lr=0.0001,
+                 drop_out=0.5,
+                 lr=0.001,
                  cuda_device=-1,
                  threshold=0.5,
                  max_seq_len=510,
@@ -32,6 +33,7 @@ class Config(UserDict):
         self.embedding_dim = embedding_dim
         self.max_seq_len = max_seq_len
         self.threshold = threshold
+        self.drop_out = drop_out
 
         self.base_dir = base_dir
 
@@ -43,6 +45,11 @@ class Config(UserDict):
         log_path = utils.get_abs_path(self.log_home, data_name)
         self.log_path = utils.get_abs_path(log_path, model_name)
         utils.re_mkdir(self.log_path)
+
+        self.result_home = utils.get_abs_path(self.base_dir, 'result')
+        result_path = utils.get_abs_path(self.result_home, data_name)
+        self.result_path = utils.get_abs_path(result_path, model_name)
+        utils.re_mkdir(self.result_path)
 
         self.epoch = epoch
         self.learning_rate = lr
