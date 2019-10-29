@@ -3,6 +3,7 @@ import numpy as np
 import json
 import os
 import xlrd
+import logging
 import xlsxwriter
 import datetime
 import smtplib
@@ -125,9 +126,25 @@ def re_mkdir(path, exist_ok=True):
     os.makedirs(path, exist_ok=exist_ok)
 
 
-def save_predict_result(path, prob, label, data):
-    assert len(prob) == len(label) == len(data)
+def save_predict_result(path, data, label, pred):
+    assert len(pred) == len(label) == len(data)
     values = []
-    for d, t, p in zip(data, label, prob):
+    for d, t, p in zip(data, label, pred):
         values.append([d, t, p])
     save_to_xlsx(path, values)
+
+def get_logger(path, logger_name):
+    logging.basicConfig(
+            handlers=[
+                logging.FileHandler(
+                        filename=path,
+                        mode='w',
+                        encoding='utf8'),
+            ],
+            level=logging.DEBUG
+    )
+    logger = logging.getLogger(logger_name)
+    return logger
+
+def get_now_time():
+    return datetime.datetime.now().strftime('%y%m%d %H:%M:%S')
